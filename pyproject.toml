@@ -3,8 +3,17 @@ name = "machine-translation-group-project-1"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.14"
+# opusfilter needs opus-fast-mosestokenizer, which has no wheel for 3.14
+requires-python = ">=3.13,<3.14"
 dependencies = [
     "matplotlib>=3.11.2",
+    "opusfilter>=3.3.1",
     "pandas>=3.1.0",
+    # 0.3 removed LanguageIdentifier.from_pickled_model, which LangidFilter calls
+    "py3langid<0.3",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.29",
 ]
