@@ -9,7 +9,7 @@ dependencies = [
     "matplotlib>=3.11.2",
     "opusfilter>=3.3.1",
     "pandas>=3.1.0",
-    # 0.3 removed LanguageIdentifier.from_pickled_model, which LangidFilter calls
+    # 0.4 removed LanguageIdentifier.from_pickled_model, which LangidFilter calls. Tested with 0.2.2
     "py3langid<0.3",
 ]
 
