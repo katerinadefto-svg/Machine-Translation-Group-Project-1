@@ -1,0 +1,88 @@
+common:
+  output_directory: work
+
+steps:
+  - type: preprocess
+    parameters:
+      inputs: [../ParaCrawl_subset.el-en.el, ../ParaCrawl_subset.el-en.en]
+      outputs: [norm.el, norm.en]
+      preprocessors:
+        - WhitespaceNormalizer: {}
+
+  - type: remove_duplicates
+    parameters:
+      inputs: [norm.el, norm.en]
+      outputs: [dedup_greek.el, dedup_greek.en]
+      compare: [0]
+      lowercase: true
+
+  - type: remove_duplicates
+    parameters:
+      inputs: [dedup_greek.el, dedup_greek.en]
+      outputs: [dedup_english.el, dedup_english.en]
+      compare: [1]
+      lowercase: true
+
+  - type: score
+    parameters:
+      inputs: [dedup_english.el, dedup_english.en]
+      output: scores.jsonl
+      filters:
+        - LengthFilter:
+            unit: word
+            min_length: [3, 0]
+            max_length: [25, .inf]
+        - LengthRatioFilter:
+            unit: word
+            threshold: 3
+        - HtmlTagFilter: {}
+        - CharacterScoreFilter:
+            scripts: [Greek, Latin]
+            thresholds: [0.9, 0.9]
+        - LangidFilter:
+            languages: [el, en]
+            langid_languages: [el, en]
+
+  - type: filter
+    parameters:
+      inputs: [dedup_english.el, dedup_english.en]
+      outputs: [length.el, length.en]
+      filters:
+        - LengthFilter:
+            unit: word
+            min_length: [3, 0]
+            max_length: [25, .inf]
+
+  - type: filter
+    parameters:
+      inputs: [length.el, length.en]
+      outputs: [ratio.el, ratio.en]
+      filters:
+        - LengthRatioFilter:
+            unit: word
+            threshold: 3
+
+  - type: filter
+    parameters:
+      inputs: [ratio.el, ratio.en]
+      outputs: [html.el, html.en]
+      filters:
+        - HtmlTagFilter: {}
+
+  - type: filter
+    parameters:
+      inputs: [html.el, html.en]
+      outputs: [script.el, script.en]
+      filters:
+        - CharacterScoreFilter:
+            scripts: [Greek, Latin]
+            thresholds: [0.9, 0.9]
+
+  - type: filter
+    parameters:
+      inputs: [script.el, script.en]
+      outputs: [langid.el, langid.en]
+      filters:
+        - LangidFilter:
+            languages: [el, en]
+            langid_languages: [el, en]
