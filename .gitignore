@@ -4,3 +4,4 @@ english_sentences.txt
 greek_sentences.txt
 work/
 .ipynb_checkpoints/
+.env
