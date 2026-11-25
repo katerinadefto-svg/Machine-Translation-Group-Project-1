@@ -27,6 +27,7 @@ def translate_sentences(sentences, target_lang="EN-US"):
     return [t["text"] for t in response.json()["translations"]]
 
 
-example_sentences = ["Γειά σου, τί κάνεις;", "Καλημέρα και καλή καρδιά"]
-results = translate_sentences(example_sentences)
-print(results)
+if __name__ == "__main__":
+    example_sentences = ["Γειά σου, τί κάνεις;", "Καλημέρα και καλή καρδιά"]
+    results = translate_sentences(example_sentences)
+    print(results)

@@ -5,3 +5,8 @@ greek_sentences.txt
 work/
 .ipynb_checkpoints/
 .env
+test.el 
+test.en
+google_translations.en
+deepl_translations.en
+azure_translations.en
